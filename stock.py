@@ -1,31 +1,30 @@
-data = [9422, 9468, 9512, 9524, 9550, 9450, 9410, 9368]
-# data = []
+
+def read_file(filename):
+	prices = []
+	with open(filename, 'r', encoding = 'utf-8') as f:
+		for line in f:
+			price = line.strip().split(',')
+			prices.append(price[5])
+		return prices
+
+
 def three_days(data):
-	if not data:
-		return
-	action = []
-	count_r = 0
-	count_d = 0
-	d_last = data[0]
-	for d in data:
-		if d > d_last:
-			count_r += 1
-			count_d = 0
-		elif d < d_last:
-			count_d += 1
-			count_r = 0
-
-		if count_r >= 3:
-			action.append(1)
-		elif count_d >= 3:
-			action.append(-1)
-		else:
-			action.append(0)
-		d_last = d
-	return action		
-
+    output = []
+    for i in range(len(data)):
+        if i < 3:
+            output.append(0)
+        elif data[i] > data[i-1] > data[i-2] > data[i-3]:
+            output.append(1)
+        elif data[i] < data[i-1] < data[i-2] < data[i-3]:
+            output.append(-1)
+        else:
+            output.append(0)
+    return output
 
 def main():
-	print(three_days(data))
-
+	filename = '2330.csv'
+	prices = read_file(filename)
+	signals = three_days(prices)
+	print(len(prices))
+	print(len(signals))
 main()
